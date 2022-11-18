@@ -1,7 +1,7 @@
 package database
 
 import (
-	"gin-restapi/src/models"
+	"gin-restapi/models"
 	"os"
 
 	"gorm.io/driver/postgres"
