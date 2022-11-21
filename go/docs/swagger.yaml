@@ -1,0 +1,126 @@
+definitions:
+  models.Autor:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: integer
+      nome:
+        type: string
+      sobrenome:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  schemas.AutorInput:
+    properties:
+      nome:
+        type: string
+      sobrenome:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /autores/:
+    get:
+      consumes:
+      - application/json
+      description: Recupera a lista de autores
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Autor'
+            type: array
+      summary: Lista autores
+      tags:
+      - autores
+    post:
+      consumes:
+      - application/json
+      description: Cria um novo autor
+      parameters:
+      - description: Dados do autor
+        in: body
+        name: autor
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.AutorInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Autor'
+      summary: Cria autor
+      tags:
+      - autores
+  /autores/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove o cadastro de um autor
+      parameters:
+      - description: ID do autor
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      summary: Deleta autor
+      tags:
+      - autores
+    get:
+      consumes:
+      - application/json
+      description: Recupera um autor por id
+      parameters:
+      - description: ID do autor
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Autor'
+      summary: Recupera autor
+      tags:
+      - autores
+    put:
+      consumes:
+      - application/json
+      description: Atualiza os dados de um autor
+      parameters:
+      - description: ID do autor
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Dados do autor
+        in: body
+        name: autor
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.AutorInput'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      summary: Atualiza autor
+      tags:
+      - autores
+swagger: "2.0"

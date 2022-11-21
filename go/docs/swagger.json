@@ -1,0 +1,194 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/autores/": {
+            "get": {
+                "description": "Recupera a lista de autores",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "autores"
+                ],
+                "summary": "Lista autores",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Autor"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Cria um novo autor",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "autores"
+                ],
+                "summary": "Cria autor",
+                "parameters": [
+                    {
+                        "description": "Dados do autor",
+                        "name": "autor",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/schemas.AutorInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.Autor"
+                        }
+                    }
+                }
+            }
+        },
+        "/autores/{id}": {
+            "get": {
+                "description": "Recupera um autor por id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "autores"
+                ],
+                "summary": "Recupera autor",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID do autor",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Autor"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Atualiza os dados de um autor",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "autores"
+                ],
+                "summary": "Atualiza autor",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID do autor",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Dados do autor",
+                        "name": "autor",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/schemas.AutorInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                }
+            },
+            "delete": {
+                "description": "Remove o cadastro de um autor",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "autores"
+                ],
+                "summary": "Deleta autor",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID do autor",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Autor": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "sobrenome": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "schemas.AutorInput": {
+            "type": "object",
+            "properties": {
+                "nome": {
+                    "type": "string"
+                },
+                "sobrenome": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
