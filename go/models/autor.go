@@ -1,9 +1,8 @@
 package models
 
 import (
+	"gin-restapi/schemas"
 	"time"
-
-	"gorm.io/gorm"
 )
 
 type Autor struct {
@@ -12,9 +11,13 @@ type Autor struct {
 	Sobrenome string
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
 func (Autor) TableName() string {
 	return "autores"
+}
+
+func (a *Autor) UpdateFromInput(s *schemas.AutorInput) {
+	a.Nome = s.Nome
+	a.Sobrenome = s.Sobrenome
 }
