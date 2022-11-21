@@ -26,3 +26,6 @@ go.work
 
 # Air tmp dir
 tmp/
+
+# SQLite Test Database file
+test.db
