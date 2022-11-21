@@ -3,26 +3,13 @@ package controllers
 import (
 	"fmt"
 	"gin-restapi/database"
+	"gin-restapi/httputil"
 	"gin-restapi/models"
 	"gin-restapi/schemas"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
-
-func findAutor(c *gin.Context, autor *models.Autor) (int, error) {
-	var uri schemas.SingleResourceUri
-
-	if err := c.ShouldBindUri(&uri); err != nil {
-		return http.StatusBadRequest, fmt.Errorf("invalid path parameter: id")
-	}
-
-	if result := database.DB.First(&autor, &models.Autor{ID: uri.ID}); result.Error != nil {
-		return http.StatusNotFound, fmt.Errorf("register not found")
-	}
-
-	return http.StatusOK, nil
-}
 
 // @BasePath /
 //
@@ -50,12 +37,14 @@ func GetAutores(c *gin.Context) {
 // @Produce json
 // @Param id path int true "ID do autor"
 // @Success 200 {object} models.Autor
+// @Failure 400 {object} httputil.HTTPError
+// @Failure 404 {object} httputil.HTTPError
 // @Router /autores/{id} [get]
 func GetAutor(c *gin.Context) {
 	var autor models.Autor
 
-	if statusCode, err := findAutor(c, &autor); err != nil {
-		c.JSON(statusCode, err.Error())
+	if statusCode, err := findRegister(c, &autor); err != nil {
+		httputil.NewError(c, statusCode, err)
 		return
 	}
 
@@ -72,15 +61,14 @@ func GetAutor(c *gin.Context) {
 // @Produce json
 // @Param autor body schemas.AutorInput true "Dados do autor"
 // @Success 201 {object} models.Autor
+// @Failure 500 {object} httputil.HTTPError
 // @Router /autores/ [post]
 func CreateAutor(c *gin.Context) {
 	var autor models.Autor
 	c.ShouldBindJSON(&autor)
 
 	if result := database.DB.Create(&autor); result.Error != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"erro": "erro ao processar a requisição",
-		})
+		httputil.NewError(c, http.StatusInternalServerError, fmt.Errorf("erro ao processar a requisição"))
 		return
 	}
 
@@ -99,6 +87,8 @@ func CreateAutor(c *gin.Context) {
 // @Param id path int true "ID do autor"
 // @Param autor body schemas.AutorInput true "Dados do autor"
 // @Success 204
+// @Failure 400 {object} httputil.HTTPError
+// @Failure 404 {object} httputil.HTTPError
 // @Router /autores/{id} [put]
 func UpdateAutor(c *gin.Context) {
 	var autor models.Autor
@@ -106,8 +96,8 @@ func UpdateAutor(c *gin.Context) {
 
 	c.ShouldBindJSON(&autorInput)
 
-	if statusCode, err := findAutor(c, &autor); err != nil {
-		c.JSON(statusCode, err.Error())
+	if statusCode, err := findRegister(c, &autor); err != nil {
+		httputil.NewError(c, statusCode, err)
 		return
 	}
 
@@ -127,12 +117,14 @@ func UpdateAutor(c *gin.Context) {
 // @Produce json
 // @Param id path int true "ID do autor"
 // @Success 204
+// @Failure 400 {object} httputil.HTTPError
+// @Failure 404 {object} httputil.HTTPError
 // @Router /autores/{id} [delete]
 func DeleteAutor(c *gin.Context) {
 	var autor models.Autor
 
-	if statusCode, err := findAutor(c, &autor); err != nil {
-		c.JSON(statusCode, err.Error())
+	if statusCode, err := findRegister(c, &autor); err != nil {
+		httputil.NewError(c, statusCode, err)
 		return
 	}
 
