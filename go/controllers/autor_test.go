@@ -6,48 +6,13 @@ import (
 	"errors"
 	"gin-restapi/database"
 	"gin-restapi/models"
-	"gin-restapi/router"
 	"io"
-	"log"
 	"net/http"
-	"net/http/httptest"
-	"os"
 	"testing"
 
-	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"
 )
-
-var (
-	r *gin.Engine
-	w *httptest.ResponseRecorder
-)
-
-func setup() {
-	gin.SetMode(gin.ReleaseMode)
-
-	r = router.SetupRouter(database.ConnectTest)
-	w = httptest.NewRecorder()
-
-	database.DB.Create(&models.Autor{Nome: "Fulano", Sobrenome: "de Tal"})
-}
-
-func shutdown() {
-	if err := os.Remove("test.db"); err != nil {
-		log.Panic("Erro ao excluir arquivo de banco de dados")
-	}
-}
-
-func TestGetAutor(t *testing.T) {
-	setup()
-	defer shutdown()
-
-	req, _ := http.NewRequest("GET", "/autores/1", nil)
-	r.ServeHTTP(w, req)
-
-	assert.Equal(t, w.Code, http.StatusOK)
-}
 
 func TestGetAutores(t *testing.T) {
 	setup()
@@ -59,6 +24,16 @@ func TestGetAutores(t *testing.T) {
 	assert.Equal(t, w.Code, http.StatusOK)
 	assert.Contains(t, w.Body.String(), "Fulano")
 	assert.Contains(t, w.Body.String(), "de Tal")
+}
+
+func TestGetAutor(t *testing.T) {
+	setup()
+	defer shutdown()
+
+	req, _ := http.NewRequest("GET", "/autores/1", nil)
+	r.ServeHTTP(w, req)
+
+	assert.Equal(t, w.Code, http.StatusOK)
 }
 
 func TestCreateAutor(t *testing.T) {
