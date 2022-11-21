@@ -1,4 +1,13 @@
 definitions:
+  httputil.HTTPError:
+    properties:
+      code:
+        example: 400
+        type: integer
+      message:
+        example: status bad request
+        type: string
+    type: object
   models.Autor:
     properties:
       createdAt:
@@ -12,11 +21,31 @@ definitions:
       updatedAt:
         type: string
     type: object
+  models.Editora:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: integer
+      localidade:
+        type: string
+      nome:
+        type: string
+      updatedAt:
+        type: string
+    type: object
   schemas.AutorInput:
     properties:
       nome:
         type: string
       sobrenome:
+        type: string
+    type: object
+  schemas.EditoraInput:
+    properties:
+      localidade:
+        type: string
+      nome:
         type: string
     type: object
 info:
@@ -57,6 +86,10 @@ paths:
           description: Created
           schema:
             $ref: '#/definitions/models.Autor'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
       summary: Cria autor
       tags:
       - autores
@@ -76,6 +109,14 @@ paths:
       responses:
         "204":
           description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
       summary: Deleta autor
       tags:
       - autores
@@ -96,6 +137,14 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.Autor'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
       summary: Recupera autor
       tags:
       - autores
@@ -120,7 +169,144 @@ paths:
       responses:
         "204":
           description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
       summary: Atualiza autor
       tags:
       - autores
+  /editoras/:
+    get:
+      consumes:
+      - application/json
+      description: Recupera a lista de editoras
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Editora'
+            type: array
+      summary: Lista editoras
+      tags:
+      - editoras
+    post:
+      consumes:
+      - application/json
+      description: Cria uma nova editora
+      parameters:
+      - description: Dados da editora
+        in: body
+        name: editora
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.EditoraInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Editora'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Cria editora
+      tags:
+      - editoras
+  /editoras/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove o cadastro de uma editora
+      parameters:
+      - description: ID da editora
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Deleta editora
+      tags:
+      - editoras
+    get:
+      consumes:
+      - application/json
+      description: Recupera uma editora por id
+      parameters:
+      - description: ID da editora
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Editora'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Recupera editora
+      tags:
+      - editoras
+    put:
+      consumes:
+      - application/json
+      description: Atualiza os dados de uma editora
+      parameters:
+      - description: ID da editora
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Dados da editora
+        in: body
+        name: editora
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.EditoraInput'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Atualiza editora
+      tags:
+      - editoras
 swagger: "2.0"

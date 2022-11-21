@@ -1,6 +1,7 @@
 package models
 
 import (
+	"gin-restapi/schemas"
 	"time"
 )
 
@@ -10,4 +11,9 @@ type Editora struct {
 	Localidade string `gorm:"not null;default:null"`
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
+}
+
+func (e *Editora) UpdateFromInput(s *schemas.EditoraInput) {
+	e.Nome = s.Nome
+	e.Localidade = s.Localidade
 }

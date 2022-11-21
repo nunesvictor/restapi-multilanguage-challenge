@@ -18,6 +18,7 @@ func SetupRouter(setupDB func()) *gin.Engine {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	AutoresGroupRouter(r)
+	EditorasGroupRouter(r)
 
 	return r
 }
