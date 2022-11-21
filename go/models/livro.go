@@ -5,8 +5,8 @@ import (
 )
 
 type Livro struct {
-	ID        uint `gorm:"primaryKey"`
-	Titulo    string
+	ID        uint   `gorm:"primaryKey"`
+	Titulo    string `gorm:"not null;default:null"`
 	EditoraID int
 	Editora   Editora
 	Autores   []Autor  `gorm:"many2many:livro_autores;"`

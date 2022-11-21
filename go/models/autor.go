@@ -6,9 +6,9 @@ import (
 )
 
 type Autor struct {
-	ID        uint `gorm:"primaryKey"`
-	Nome      string
-	Sobrenome string
+	ID        uint   `gorm:"primaryKey"`
+	Nome      string `gorm:"not null;default:null"`
+	Sobrenome string `gorm:"not null;default:null"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
