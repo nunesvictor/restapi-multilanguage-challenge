@@ -39,21 +39,20 @@ func shutdown() {
 	}
 }
 
-func TestMain(m *testing.M) {
-	setup()
-	code := m.Run()
-	shutdown()
-	os.Exit(code)
-}
-
 func TestGetAutor(t *testing.T) {
+	setup()
+	defer shutdown()
+
 	req, _ := http.NewRequest("GET", "/autores/1", nil)
 	r.ServeHTTP(w, req)
 
-	assert.Equal(t, w.Code, http.StatusOK, w.Body.String())
+	assert.Equal(t, w.Code, http.StatusOK)
 }
 
 func TestGetAutores(t *testing.T) {
+	setup()
+	defer shutdown()
+
 	req, _ := http.NewRequest("GET", "/autores/", nil)
 	r.ServeHTTP(w, req)
 
@@ -63,6 +62,9 @@ func TestGetAutores(t *testing.T) {
 }
 
 func TestCreateAutor(t *testing.T) {
+	setup()
+	defer shutdown()
+
 	autor := models.Autor{Nome: "Beltrano", Sobrenome: "de Tal"}
 	jsonStr, _ := json.Marshal(&autor)
 
@@ -73,8 +75,6 @@ func TestCreateAutor(t *testing.T) {
 	body, _ := io.ReadAll(resp.Body)
 	json.Unmarshal(body, &autor)
 
-	log.Println(w.Result().StatusCode)
-
 	assert.Equal(t, w.Code, http.StatusCreated)
 	assert.Equal(t, autor.ID, uint(2))
 	assert.Equal(t, autor.Nome, "Beltrano")
@@ -82,6 +82,9 @@ func TestCreateAutor(t *testing.T) {
 }
 
 func TestUpdateAutor(t *testing.T) {
+	setup()
+	defer shutdown()
+
 	autor := models.Autor{Nome: "Ciclano", Sobrenome: "da Silva"}
 	jsonStr, _ := json.Marshal(&autor)
 
@@ -96,6 +99,9 @@ func TestUpdateAutor(t *testing.T) {
 }
 
 func TestDeleteAutor(t *testing.T) {
+	setup()
+	defer shutdown()
+
 	req, _ := http.NewRequest("DELETE", "/autores/1", nil)
 	r.ServeHTTP(w, req)
 
