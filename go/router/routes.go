@@ -19,6 +19,7 @@ func SetupRouter(setupDB func()) *gin.Engine {
 
 	AutoresGroupRouter(r)
 	EditorasGroupRouter(r)
+	GenerosGroupRouter(r)
 
 	return r
 }

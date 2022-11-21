@@ -24,6 +24,7 @@ func setup() {
 
 	database.DB.Create(&models.Autor{Nome: "Fulano", Sobrenome: "de Tal"})
 	database.DB.Create(&models.Editora{Nome: "Editora A", Localidade: "Palmas"})
+	database.DB.Create(&models.Genero{Descricao: "Genero A"})
 }
 
 func shutdown() {
