@@ -1,8 +1,10 @@
 package models
 
 import (
-	"gin-restapi/schemas"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type Editora struct {
@@ -13,7 +15,9 @@ type Editora struct {
 	UpdatedAt  time.Time
 }
 
-func (e *Editora) UpdateFromInput(s *schemas.EditoraInput) {
-	e.Nome = s.Nome
-	e.Localidade = s.Localidade
+func (e *Editora) Update(c *gin.Context, db *gorm.DB, n *Editora) {
+	e.Nome = n.Nome
+	e.Localidade = n.Localidade
+
+	Update(c, db, e, nil)
 }

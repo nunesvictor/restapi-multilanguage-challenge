@@ -1,11 +1,9 @@
 package controllers
 
 import (
-	"fmt"
 	"gin-restapi/database"
 	"gin-restapi/httputil"
 	"gin-restapi/models"
-	"gin-restapi/schemas"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -25,11 +23,7 @@ import (
 func GetEditoras(c *gin.Context) {
 	var editoras []models.Editora
 
-	if result := database.DB.Find(&editoras); result.Error != nil {
-		httputil.NewError(c, http.StatusInternalServerError, fmt.Errorf("erro ao processar a requisição"))
-		return
-	}
-
+	models.ListAll(c, database.DB, &editoras)
 	c.JSON(http.StatusOK, &editoras)
 }
 
@@ -49,11 +43,7 @@ func GetEditoras(c *gin.Context) {
 func GetEditora(c *gin.Context) {
 	var editora models.Editora
 
-	if statusCode, err := findRegister(c, &editora); err != nil {
-		httputil.NewError(c, statusCode, err)
-		return
-	}
-
+	models.Get(c, database.DB, &editora)
 	c.JSON(http.StatusOK, &editora)
 }
 
@@ -72,21 +62,7 @@ func GetEditora(c *gin.Context) {
 func CreateEditora(c *gin.Context) {
 	var editora models.Editora
 
-	if err := c.ShouldBindJSON(&editora); err != nil {
-		httputil.NewError(c, http.StatusBadRequest, err)
-		return
-	}
-
-	if result := database.DB.Create(&editora); result.Error != nil {
-		httputil.NewError(c, http.StatusInternalServerError, fmt.Errorf("erro ao processar a requisição"))
-		return
-	}
-
-	if result := database.DB.First(&editora); result.Error != nil {
-		httputil.NewError(c, http.StatusInternalServerError, fmt.Errorf("erro ao processar a requisição"))
-		return
-	}
-
+	models.Create(c, database.DB, &editora)
 	c.JSON(http.StatusCreated, &editora)
 }
 
@@ -106,26 +82,15 @@ func CreateEditora(c *gin.Context) {
 // @Failure 500 {object} httputil.HTTPError
 // @Router /editoras/{id} [put]
 func UpdateEditora(c *gin.Context) {
-	var editora models.Editora
-	var editoraInput schemas.EditoraInput
-
-	if statusCode, err := findRegister(c, &editora); err != nil {
-		httputil.NewError(c, statusCode, err)
-		return
-	}
+	var editora, editoraInput models.Editora
+	models.Get(c, database.DB, &editora)
 
 	if err := c.ShouldBindJSON(&editoraInput); err != nil {
 		httputil.NewError(c, http.StatusInternalServerError, err)
 		return
 	}
 
-	editora.UpdateFromInput(&editoraInput)
-
-	if result := database.DB.Save(&editora); result.Error != nil {
-		httputil.NewError(c, http.StatusInternalServerError, fmt.Errorf("erro ao processar a requisição"))
-		return
-	}
-
+	editora.Update(c, database.DB, &editoraInput)
 	c.JSON(http.StatusNoContent, nil)
 }
 
@@ -144,17 +109,6 @@ func UpdateEditora(c *gin.Context) {
 // @Failure 500 {object} httputil.HTTPError
 // @Router /editoras/{id} [delete]
 func DeleteEditora(c *gin.Context) {
-	var editora models.Editora
-
-	if statusCode, err := findRegister(c, &editora); err != nil {
-		httputil.NewError(c, statusCode, err)
-		return
-	}
-
-	if result := database.DB.Delete(&editora); result.Error != nil {
-		httputil.NewError(c, http.StatusInternalServerError, fmt.Errorf("erro ao processar a requisição"))
-		return
-	}
-
+	models.Delete[models.Editora](c, database.DB)
 	c.JSON(http.StatusNoContent, nil)
 }

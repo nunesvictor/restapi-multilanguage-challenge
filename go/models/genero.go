@@ -1,8 +1,10 @@
 package models
 
 import (
-	"gin-restapi/schemas"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type Genero struct {
@@ -12,6 +14,6 @@ type Genero struct {
 	UpdatedAt time.Time
 }
 
-func (g *Genero) UpdateFromInput(s *schemas.GeneroInput) {
-	g.Descricao = s.Descricao
+func (g *Genero) Update(c *gin.Context, db *gorm.DB, n *Genero) {
+	g.Descricao = n.Descricao
 }

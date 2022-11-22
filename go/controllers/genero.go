@@ -1,11 +1,9 @@
 package controllers
 
 import (
-	"fmt"
 	"gin-restapi/database"
 	"gin-restapi/httputil"
 	"gin-restapi/models"
-	"gin-restapi/schemas"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -25,11 +23,7 @@ import (
 func GetGeneros(c *gin.Context) {
 	var generos []models.Genero
 
-	if result := database.DB.Find(&generos); result.Error != nil {
-		httputil.NewError(c, http.StatusInternalServerError, fmt.Errorf("erro ao processar a requisição"))
-		return
-	}
-
+	models.ListAll(c, database.DB, &generos)
 	c.JSON(http.StatusOK, &generos)
 }
 
@@ -49,11 +43,7 @@ func GetGeneros(c *gin.Context) {
 func GetGenero(c *gin.Context) {
 	var genero models.Genero
 
-	if statusCode, err := findRegister(c, &genero); err != nil {
-		httputil.NewError(c, statusCode, err)
-		return
-	}
-
+	models.Get(c, database.DB, &genero)
 	c.JSON(http.StatusOK, &genero)
 }
 
@@ -72,21 +62,7 @@ func GetGenero(c *gin.Context) {
 func CreateGenero(c *gin.Context) {
 	var genero models.Genero
 
-	if err := c.ShouldBindJSON(&genero); err != nil {
-		httputil.NewError(c, http.StatusBadRequest, err)
-		return
-	}
-
-	if result := database.DB.Create(&genero); result.Error != nil {
-		httputil.NewError(c, http.StatusInternalServerError, fmt.Errorf("erro ao processar a requisição"))
-		return
-	}
-
-	if result := database.DB.First(&genero); result.Error != nil {
-		httputil.NewError(c, http.StatusInternalServerError, fmt.Errorf("erro ao processar a requisição"))
-		return
-	}
-
+	models.Create(c, database.DB, &genero)
 	c.JSON(http.StatusCreated, &genero)
 }
 
@@ -106,26 +82,15 @@ func CreateGenero(c *gin.Context) {
 // @Failure 500 {object} httputil.HTTPError
 // @Router /generos/{id} [put]
 func UpdateGenero(c *gin.Context) {
-	var genero models.Genero
-	var generoInput schemas.GeneroInput
-
-	if statusCode, err := findRegister(c, &genero); err != nil {
-		httputil.NewError(c, statusCode, err)
-		return
-	}
+	var genero, generoInput models.Genero
+	models.Get(c, database.DB, &genero)
 
 	if err := c.ShouldBindJSON(&generoInput); err != nil {
 		httputil.NewError(c, http.StatusInternalServerError, err)
 		return
 	}
 
-	genero.UpdateFromInput(&generoInput)
-
-	if result := database.DB.Save(&genero); result.Error != nil {
-		httputil.NewError(c, http.StatusInternalServerError, fmt.Errorf("erro ao processar a requisição"))
-		return
-	}
-
+	genero.Update(c, database.DB, &generoInput)
 	c.JSON(http.StatusNoContent, nil)
 }
 
@@ -144,17 +109,6 @@ func UpdateGenero(c *gin.Context) {
 // @Failure 500 {object} httputil.HTTPError
 // @Router /generos/{id} [delete]
 func DeleteGenero(c *gin.Context) {
-	var genero models.Genero
-
-	if statusCode, err := findRegister(c, &genero); err != nil {
-		httputil.NewError(c, statusCode, err)
-		return
-	}
-
-	if result := database.DB.Delete(&genero); result.Error != nil {
-		httputil.NewError(c, http.StatusInternalServerError, fmt.Errorf("erro ao processar a requisição"))
-		return
-	}
-
+	models.Delete[models.Genero](c, database.DB)
 	c.JSON(http.StatusNoContent, nil)
 }

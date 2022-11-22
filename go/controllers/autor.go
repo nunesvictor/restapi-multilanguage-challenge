@@ -1,11 +1,9 @@
 package controllers
 
 import (
-	"fmt"
 	"gin-restapi/database"
 	"gin-restapi/httputil"
 	"gin-restapi/models"
-	"gin-restapi/schemas"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -25,11 +23,7 @@ import (
 func GetAutores(c *gin.Context) {
 	var autores []models.Autor
 
-	if result := database.DB.Find(&autores); result.Error != nil {
-		httputil.NewError(c, http.StatusInternalServerError, fmt.Errorf("erro ao processar a requisição"))
-		return
-	}
-
+	models.ListAll(c, database.DB, &autores)
 	c.JSON(http.StatusOK, &autores)
 }
 
@@ -49,11 +43,7 @@ func GetAutores(c *gin.Context) {
 func GetAutor(c *gin.Context) {
 	var autor models.Autor
 
-	if statusCode, err := findRegister(c, &autor); err != nil {
-		httputil.NewError(c, statusCode, err)
-		return
-	}
-
+	models.Get(c, database.DB, &autor)
 	c.JSON(http.StatusOK, &autor)
 }
 
@@ -72,21 +62,7 @@ func GetAutor(c *gin.Context) {
 func CreateAutor(c *gin.Context) {
 	var autor models.Autor
 
-	if err := c.ShouldBindJSON(&autor); err != nil {
-		httputil.NewError(c, http.StatusBadRequest, err)
-		return
-	}
-
-	if result := database.DB.Create(&autor); result.Error != nil {
-		httputil.NewError(c, http.StatusInternalServerError, fmt.Errorf("erro ao processar a requisição"))
-		return
-	}
-
-	if result := database.DB.First(&autor); result.Error != nil {
-		httputil.NewError(c, http.StatusInternalServerError, fmt.Errorf("erro ao processar a requisição"))
-		return
-	}
-
+	models.Create(c, database.DB, &autor)
 	c.JSON(http.StatusCreated, &autor)
 }
 
@@ -106,26 +82,15 @@ func CreateAutor(c *gin.Context) {
 // @Failure 500 {object} httputil.HTTPError
 // @Router /autores/{id} [put]
 func UpdateAutor(c *gin.Context) {
-	var autor models.Autor
-	var autorInput schemas.AutorInput
-
-	if statusCode, err := findRegister(c, &autor); err != nil {
-		httputil.NewError(c, statusCode, err)
-		return
-	}
+	var autor, autorInput models.Autor
+	models.Get(c, database.DB, &autor)
 
 	if err := c.ShouldBindJSON(&autorInput); err != nil {
 		httputil.NewError(c, http.StatusInternalServerError, err)
 		return
 	}
 
-	autor.UpdateFromInput(&autorInput)
-
-	if result := database.DB.Save(&autor); result.Error != nil {
-		httputil.NewError(c, http.StatusInternalServerError, fmt.Errorf("erro ao processar a requisição"))
-		return
-	}
-
+	autor.Update(c, database.DB, &autorInput)
 	c.JSON(http.StatusNoContent, nil)
 }
 
@@ -144,17 +109,6 @@ func UpdateAutor(c *gin.Context) {
 // @Failure 500 {object} httputil.HTTPError
 // @Router /autores/{id} [delete]
 func DeleteAutor(c *gin.Context) {
-	var autor models.Autor
-
-	if statusCode, err := findRegister(c, &autor); err != nil {
-		httputil.NewError(c, statusCode, err)
-		return
-	}
-
-	if result := database.DB.Delete(&autor); result.Error != nil {
-		httputil.NewError(c, http.StatusInternalServerError, fmt.Errorf("erro ao processar a requisição"))
-		return
-	}
-
+	models.Delete[models.Autor](c, database.DB)
 	c.JSON(http.StatusNoContent, nil)
 }
