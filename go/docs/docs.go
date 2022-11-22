@@ -66,7 +66,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schemas.AutorInput"
+                            "$ref": "#/definitions/models.Autor"
                         }
                     }
                 ],
@@ -155,7 +155,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schemas.AutorInput"
+                            "$ref": "#/definitions/models.Autor"
                         }
                     }
                 ],
@@ -279,7 +279,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schemas.EditoraInput"
+                            "$ref": "#/definitions/models.Editora"
                         }
                     }
                 ],
@@ -368,7 +368,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schemas.EditoraInput"
+                            "$ref": "#/definitions/models.Editora"
                         }
                     }
                 ],
@@ -492,7 +492,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schemas.GeneroInput"
+                            "$ref": "#/definitions/models.Genero"
                         }
                     }
                 ],
@@ -581,7 +581,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schemas.GeneroInput"
+                            "$ref": "#/definitions/models.Genero"
                         }
                     }
                 ],
@@ -723,36 +723,6 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "updatedAt": {
-                    "type": "string"
-                }
-            }
-        },
-        "schemas.AutorInput": {
-            "type": "object",
-            "properties": {
-                "nome": {
-                    "type": "string"
-                },
-                "sobrenome": {
-                    "type": "string"
-                }
-            }
-        },
-        "schemas.EditoraInput": {
-            "type": "object",
-            "properties": {
-                "localidade": {
-                    "type": "string"
-                },
-                "nome": {
-                    "type": "string"
-                }
-            }
-        },
-        "schemas.GeneroInput": {
-            "type": "object",
-            "properties": {
-                "descricao": {
                     "type": "string"
                 }
             }

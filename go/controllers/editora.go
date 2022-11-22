@@ -55,7 +55,7 @@ func GetEditora(c *gin.Context) {
 // @Tags editoras
 // @Accept json
 // @Produce json
-// @Param editora body schemas.EditoraInput true "Dados da editora"
+// @Param editora body models.Editora true "Dados da editora"
 // @Success 201 {object} models.Editora
 // @Failure 500 {object} httputil.HTTPError
 // @Router /editoras/ [post]
@@ -75,7 +75,7 @@ func CreateEditora(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path int true "ID da editora"
-// @Param editora body schemas.EditoraInput true "Dados da editora"
+// @Param editora body models.Editora true "Dados da editora"
 // @Success 204
 // @Failure 400 {object} httputil.HTTPError
 // @Failure 404 {object} httputil.HTTPError

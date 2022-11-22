@@ -55,7 +55,7 @@ func GetAutor(c *gin.Context) {
 // @Tags autores
 // @Accept json
 // @Produce json
-// @Param autor body schemas.AutorInput true "Dados do autor"
+// @Param autor body models.Autor true "Dados do autor"
 // @Success 201 {object} models.Autor
 // @Failure 500 {object} httputil.HTTPError
 // @Router /autores/ [post]
@@ -75,7 +75,7 @@ func CreateAutor(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path int true "ID do autor"
-// @Param autor body schemas.AutorInput true "Dados do autor"
+// @Param autor body models.Autor true "Dados do autor"
 // @Success 204
 // @Failure 400 {object} httputil.HTTPError
 // @Failure 404 {object} httputil.HTTPError

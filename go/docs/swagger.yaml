@@ -45,25 +45,6 @@ definitions:
       updatedAt:
         type: string
     type: object
-  schemas.AutorInput:
-    properties:
-      nome:
-        type: string
-      sobrenome:
-        type: string
-    type: object
-  schemas.EditoraInput:
-    properties:
-      localidade:
-        type: string
-      nome:
-        type: string
-    type: object
-  schemas.GeneroInput:
-    properties:
-      descricao:
-        type: string
-    type: object
 info:
   contact: {}
 paths:
@@ -98,7 +79,7 @@ paths:
         name: autor
         required: true
         schema:
-          $ref: '#/definitions/schemas.AutorInput'
+          $ref: '#/definitions/models.Autor'
       produces:
       - application/json
       responses:
@@ -187,7 +168,7 @@ paths:
         name: autor
         required: true
         schema:
-          $ref: '#/definitions/schemas.AutorInput'
+          $ref: '#/definitions/models.Autor'
       produces:
       - application/json
       responses:
@@ -239,7 +220,7 @@ paths:
         name: editora
         required: true
         schema:
-          $ref: '#/definitions/schemas.EditoraInput'
+          $ref: '#/definitions/models.Editora'
       produces:
       - application/json
       responses:
@@ -328,7 +309,7 @@ paths:
         name: editora
         required: true
         schema:
-          $ref: '#/definitions/schemas.EditoraInput'
+          $ref: '#/definitions/models.Editora'
       produces:
       - application/json
       responses:
@@ -380,7 +361,7 @@ paths:
         name: genero
         required: true
         schema:
-          $ref: '#/definitions/schemas.GeneroInput'
+          $ref: '#/definitions/models.Genero'
       produces:
       - application/json
       responses:
@@ -469,7 +450,7 @@ paths:
         name: genero
         required: true
         schema:
-          $ref: '#/definitions/schemas.GeneroInput'
+          $ref: '#/definitions/models.Genero'
       produces:
       - application/json
       responses:

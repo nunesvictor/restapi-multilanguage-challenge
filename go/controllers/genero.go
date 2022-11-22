@@ -55,7 +55,7 @@ func GetGenero(c *gin.Context) {
 // @Tags generos
 // @Accept json
 // @Produce json
-// @Param genero body schemas.GeneroInput true "Dados do genero"
+// @Param genero body models.Genero true "Dados do genero"
 // @Success 201 {object} models.Genero
 // @Failure 500 {object} httputil.HTTPError
 // @Router /generos/ [post]
@@ -75,7 +75,7 @@ func CreateGenero(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path int true "ID do genero"
-// @Param genero body schemas.GeneroInput true "Dados do genero"
+// @Param genero body models.Genero true "Dados do genero"
 // @Success 204
 // @Failure 400 {object} httputil.HTTPError
 // @Failure 404 {object} httputil.HTTPError
