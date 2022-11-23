@@ -16,4 +16,6 @@ type Genero struct {
 
 func (g *Genero) Update(c *gin.Context, db *gorm.DB, n *Genero) {
 	g.Descricao = n.Descricao
+
+	Update(c, db, g, nil)
 }

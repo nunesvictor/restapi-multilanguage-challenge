@@ -12,8 +12,11 @@ import (
 )
 
 var (
-	r *gin.Engine
-	w *httptest.ResponseRecorder
+	r           *gin.Engine
+	w           *httptest.ResponseRecorder
+	autorTest   *models.Autor
+	editoraTest *models.Editora
+	generoTest  *models.Genero
 )
 
 func setup() {
@@ -22,9 +25,13 @@ func setup() {
 	r = router.SetupRouter(database.ConnectTest)
 	w = httptest.NewRecorder()
 
-	database.DB.Create(&models.Autor{Nome: "Fulano", Sobrenome: "de Tal"})
-	database.DB.Create(&models.Editora{Nome: "Editora A", Localidade: "Palmas"})
-	database.DB.Create(&models.Genero{Descricao: "Genero A"})
+	autorTest = &models.Autor{Nome: "Fulano", Sobrenome: "de Tal"}
+	editoraTest = &models.Editora{Nome: "Editora A", Localidade: "Palmas"}
+	generoTest = &models.Genero{Descricao: "Genero A"}
+
+	database.DB.Create(autorTest)
+	database.DB.Create(editoraTest)
+	database.DB.Create(generoTest)
 }
 
 func shutdown() {
