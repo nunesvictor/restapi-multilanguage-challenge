@@ -45,6 +45,37 @@ definitions:
       updatedAt:
         type: string
     type: object
+  models.Livro:
+    properties:
+      ano:
+        type: integer
+      autores:
+        items:
+          $ref: '#/definitions/models.Autor'
+        type: array
+      createdAt:
+        type: string
+      edicao:
+        type: integer
+      editora:
+        $ref: '#/definitions/models.Editora'
+      editoraID:
+        type: integer
+      generos:
+        items:
+          $ref: '#/definitions/models.Genero'
+        type: array
+      id:
+        type: integer
+      isbn:
+        type: string
+      paginas:
+        type: integer
+      titulo:
+        type: string
+      updatedAt:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
@@ -471,4 +502,145 @@ paths:
       summary: Atualiza genero
       tags:
       - generos
+  /livros/:
+    get:
+      consumes:
+      - application/json
+      description: Recupera a lista de livros
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Livro'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Lista livros
+      tags:
+      - livros
+    post:
+      consumes:
+      - application/json
+      description: Cria um novo livro
+      parameters:
+      - description: Dados do livro
+        in: body
+        name: livro
+        required: true
+        schema:
+          $ref: '#/definitions/models.Livro'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Livro'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Cria livro
+      tags:
+      - livros
+  /livros/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove o cadastro de um livro
+      parameters:
+      - description: ID do livro
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Deleta livro
+      tags:
+      - livros
+    get:
+      consumes:
+      - application/json
+      description: Recupera um livro por id
+      parameters:
+      - description: ID do livro
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Livro'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Recupera livro
+      tags:
+      - livros
+    put:
+      consumes:
+      - application/json
+      description: Atualiza os dados de um livro
+      parameters:
+      - description: ID do livro
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Dados do livro
+        in: body
+        name: livro
+        required: true
+        schema:
+          $ref: '#/definitions/models.Livro'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Atualiza livro
+      tags:
+      - livros
 swagger: "2.0"
