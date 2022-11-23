@@ -8,11 +8,11 @@ import (
 )
 
 type Autor struct {
-	ID        uint   `gorm:"primaryKey"`
-	Nome      string `gorm:"not null;default:null"`
-	Sobrenome string `gorm:"not null;default:null"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID        uint      `json:"id,omitempty" gorm:"primaryKey"`
+	Nome      string    `json:",omitempty" gorm:"not null;default:null"`
+	Sobrenome string    `json:",omitempty" gorm:"not null;default:null"`
+	CreatedAt time.Time `json:",omitempty"`
+	UpdatedAt time.Time `json:",omitempty"`
 }
 
 func (Autor) TableName() string {

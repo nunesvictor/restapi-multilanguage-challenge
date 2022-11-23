@@ -8,10 +8,10 @@ import (
 )
 
 type Genero struct {
-	ID        uint   `gorm:"primaryKey"`
-	Descricao string `gorm:"not null;default:null"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID        uint      `json:"id,omitempty" gorm:"primaryKey"`
+	Descricao string    `json:",omitempty" gorm:"not null;default:null"`
+	CreatedAt time.Time `json:",omitempty"`
+	UpdatedAt time.Time `json:",omitempty"`
 }
 
 func (g *Genero) Update(c *gin.Context, db *gorm.DB, n *Genero) {
