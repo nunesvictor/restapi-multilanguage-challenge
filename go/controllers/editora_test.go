@@ -71,7 +71,6 @@ func TestCreateEditora(t *testing.T) {
 	json.Unmarshal(body, &respEditora)
 
 	assert.Equal(t, w.Code, http.StatusCreated)
-	assert.Equal(t, reqEditora.ID, uint(2))
 	assert.Equal(t, reqEditora.Nome, respEditora.Nome, fmt.Sprintf("editora.Nome: %s", reqEditora.Nome))
 	assert.Equal(t, reqEditora.Localidade, respEditora.Localidade, fmt.Sprintf("editora.Localidade: %s", reqEditora.Localidade))
 }
