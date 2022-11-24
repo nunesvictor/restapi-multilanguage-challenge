@@ -3,7 +3,6 @@ package models
 import (
 	"fmt"
 	"gin-restapi/httputil"
-	"log"
 	"net/http"
 	"time"
 
@@ -49,10 +48,6 @@ func (l *Livro) Update(c *gin.Context, db *gorm.DB, n *Livro) {
 	l.ISBN = n.ISBN
 
 	postSave := func() {
-		log.Println("============> UPDATE ASSOCIATION")
-		log.Printf("%+v", n.Autores)
-		log.Printf("%+v", n.Generos)
-
 		db.Model(&l).Association("Autores").Replace(n.Autores)
 		db.Model(&l).Association("Generos").Replace(n.Generos)
 	}

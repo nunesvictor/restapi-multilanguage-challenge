@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"gin-restapi/httputil"
 	"gin-restapi/schemas"
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -14,13 +13,11 @@ import (
 func Create[T any](c *gin.Context, db *gorm.DB, model T) error {
 	if err := c.ShouldBindJSON(&model); err != nil {
 		httputil.NewError(c, http.StatusBadRequest, err)
-		log.Printf("aqui")
 		return err
 	}
 
 	if result := db.Create(&model); result.Error != nil {
 		httputil.NewError(c, http.StatusInternalServerError, fmt.Errorf("erro ao processar a requisição"))
-		log.Panicf("%v", result.Error)
 		return fmt.Errorf(result.Error.Error())
 	}
 
